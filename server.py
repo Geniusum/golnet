@@ -162,6 +162,11 @@ class GameServer:
         self.game_state["start_time"] = time.time()
         while self.game_state["game_started"]:
             try:
+                if not self.game_state["players"]:
+                    print("No players left in the game. Ending game.")
+                    await self.end_game_logic()
+                    break
+
                 start_tick_time = time.time()
                 async with self.state_lock:
                     for player_id, player in self.game_state["players"].items():
@@ -304,6 +309,10 @@ class GameServer:
 
     async def start_game_logic(self):
         """Logic for starting the game."""
+        if self.lobby_timer_task and not self.lobby_timer_task.done():
+            self.lobby_timer_task.cancel()
+            self.lobby_end_time = None
+            print("Lobby countdown cancelled by manual start.")
         async with self.state_lock:
             if not self.game_state["players"]:
                 print("No players in the lobby. Cannot start the game.")

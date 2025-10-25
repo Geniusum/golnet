@@ -45,6 +45,16 @@
         }
 
         @font-face {
+            font-family: rubikMedium;
+            src: url("assets/rubik-medium.ttf");
+        }
+
+        @font-face {
+            font-family: rubikBold;
+            src: url("assets/rubik-bold.ttf");
+        }
+
+        @font-face {
             font-family: rubikItalic;
             src: url("assets/rubik-italic.ttf");
         }
@@ -127,9 +137,8 @@
             box-shadow: inset 0px -4px #ffffff40, inset 0px 4px #00000040;
             border: none;
             color: white;
-            font-family: rubik, sans-serif;
+            font-family: rubikBold, sans-serif;
             font-size: 18px;
-            font-weight: bold;
             width: 250px;
         }
 
@@ -169,9 +178,8 @@
             border: none;
             cursor: url(assets/link_cursor.png) 0 0, pointer;
             user-select: none;
-            font-family: rubik, sans-serif;
+            font-family: rubikBold, rubik, sans-serif;
             font-size: 18px;
-            font-weight: bold;
             border: solid 4px #7c5430;
             box-shadow: inset 0px 4px #ffffff40, inset 0px -4px #00000040;
         }
@@ -207,7 +215,7 @@
             min-width: 300px;
             margin-bottom: 1rem;
             color: white;
-            font-family: rubik, sans-serif;
+            font-family: rubikBold, rubik, sans-serif;
             font-size: 18px;
             font-weight: bold;
             width: 250px;
@@ -442,7 +450,7 @@
             justify-items: center;
             margin-bottom: 10px;
             color: white;
-            font-family: rubik, sans-serif;
+            font-family: rubikBold, rubik, sans-serif;
             font-size: 18px;
             font-weight: bold;
             background-color: #9BA5A9;
@@ -539,6 +547,7 @@
             display: inline-block;
             width: 200px;
             color: #f1d6b0;
+            font-family: rubikBold, rubin, sans-serif;
             font-weight: bold;
         }
 
@@ -562,6 +571,7 @@
         }
 
         #pattern-size-display {
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
             min-width: 50px;
             text-align: center;
@@ -662,11 +672,10 @@
             border-radius: 0;
         }
 
-
-
         .setting-row span {
             flex-basis: 50px;
             text-align: right;
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
         }
 
@@ -713,10 +722,12 @@
         }
 
         .server-name {
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
         }
 
         .server-status {
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
             text-align: right;
         }
@@ -725,6 +736,7 @@
         .status-lobby,
         .status-waiting,
         .status-disconnected {
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
             text-shadow: 2px 2px 0 black;
         }
@@ -773,6 +785,7 @@
         }
 
         .catalog-item .pattern-name {
+            font-family: rubikBold, rubik, sans-serif;
             font-weight: bold;
             text-transform: uppercase;
             font-size: 16px;
@@ -911,6 +924,31 @@
             justify-content: center;
             gap: 10px;
             margin-top: 15px;
+        }
+
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a2533;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            z-index: 9999;
+        }
+
+        #loading-text {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: rubikBold, rubik, sans-serif;
+            font-weight: bold;
         }
 
         @media (max-width: 800px) {
@@ -1130,6 +1168,9 @@
 </head>
 
 <body>
+    <div id="loading-screen">
+        <div id="loading-text">Loading resources... (0/0)</div>
+    </div>
     <div id="interact-prompt">Click or press any key to enable audio</div>
     <div id="main-menu">
         <button id="main-menu-patterns-btn">PATTERNS</button>
@@ -1264,7 +1305,9 @@
                 Your score is the number of cells of your color. The game ends when the timer runs out. Be strategic to
                 make your patterns grow and invade others'!
             </p>
-            <h3 class="not-selectable">RESSOURCES</h3>
+            <h3 class="not-selectable">Contribute</h3>
+            <a href="https://github.com/Geniusum/golnet">GitHub</a>
+            <h3 class="not-selectable">Ressources</h3>
             <ul>
                 <li><a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Wikipedia EN — Conway's Game Of
                         Life</a></li>
@@ -1406,6 +1449,8 @@
     <audio id="sfx-thirty_seconds" src="assets/sounds/thirty_seconds.mp3"></audio>
 
     <script>
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingText = document.getElementById('loading-text');
         const mainMenu = document.getElementById('main-menu');
         const interactPrompt = document.getElementById('interact-prompt');
         const gameScreen = document.getElementById('game-screen');
@@ -1816,6 +1861,121 @@
                 });
             }
         };
+
+        function preloadResources(onComplete) {
+            const resourcesToLoad = [
+                { type: 'font', url: 'assets/rubik.ttf', name: 'rubik' },
+                { type: 'font', url: 'assets/rubik-medium.ttf', name: 'rubikMedium' },
+                { type: 'font', url: 'assets/rubik-bold.ttf', name: 'rubikBold' },
+                { type: 'font', url: 'assets/rubik-italic.ttf', name: 'rubikItalic' },
+                'assets/add_icon.png',
+                'assets/background_tile.png',
+                'assets/cancel_icon.png',
+                'assets/canvas_tile.png',
+                'assets/cross_cursor.png',
+                'assets/delete_icon.png',
+                'assets/edit_icon.png',
+                'assets/favicon.ico',
+                'assets/fifteen_seconds.png',
+                'assets/link_cursor.png',
+                'assets/logo.png',
+                'assets/mobile_logo.png',
+                'assets/normal_cursor.png',
+                'assets/one_minute.png',
+                'assets/options_icon.png',
+                'assets/podium_overlay.png',
+                'assets/rotate_icon.png',
+                'assets/save_icon.png',
+                'assets/ten_seconds.png',
+                'assets/text_cursor.png',
+                'assets/thirty_seconds.png',
+                { type: 'audio', id: 'sfx-click' },
+                { type: 'audio', id: 'sfx-delete' },
+                { type: 'audio', id: 'sfx-fifteen_seconds' },
+                { type: 'audio', id: 'sfx-one_minute_left' },
+                { type: 'audio', id: 'sfx-place_pattern' },
+                { type: 'audio', id: 'sfx-send' },
+                { type: 'audio', id: 'sfx-tap' },
+                { type: 'audio', id: 'sfx-ten_seconds' },
+                { type: 'audio', id: 'sfx-thirty_seconds' },
+                { type: 'audio', path: 'assets/musics/A-Better-Place.mp3' },
+                { type: 'audio', path: 'assets/musics/All-Aboard.mp3' },
+                { type: 'audio', path: 'assets/musics/And-Now-the-Weather.mp3' },
+                { type: 'audio', path: 'assets/musics/Better-Days.mp3' },
+                { type: 'audio', path: 'assets/musics/Born-2-Lounge.mp3' },
+                { type: 'audio', path: 'assets/musics/Cat-is-Sad.mp3' },
+                { type: 'audio', path: 'assets/musics/Chasing-You.mp3' },
+                { type: 'audio', path: 'assets/musics/Checkpoint.mp3' },
+                { type: 'audio', path: 'assets/musics/Chillin.mp3' },
+                { type: 'audio', path: 'assets/musics/Down-Low.mp3' },
+                { type: 'audio', path: 'assets/musics/Here-Comes-Fall-Again.mp3' },
+                { type: 'audio', path: 'assets/musics/Jamuary-Track-3.mp3' },
+                { type: 'audio', path: 'assets/musics/Lounge-42.mp3' },
+                { type: 'audio', path: 'assets/musics/Lounging-Around.mp3' },
+                { type: 'audio', path: 'assets/musics/Lovebirds.mp3' },
+                { type: 'audio', path: 'assets/musics/Rainy-Night.mp3' },
+                { type: 'audio', path: 'assets/musics/Roller.mp3' },
+                { type: 'audio', path: 'assets/musics/Seaside-Stroll.mp3' },
+                { type: 'audio', path: 'assets/musics/skyline.mp3' },
+                { type: 'audio', path: 'assets/musics/Slow-Down.mp3' },
+                { type: 'audio', path: 'assets/musics/Summer-Lunacy.mp3' },
+                { type: 'audio', path: 'assets/musics/Sunny-Days.mp3' },
+                { type: 'audio', path: 'assets/musics/Vaulting-for-Victory.mp3' },
+                { type: 'audio', path: 'assets/musics/Vibin-Out.mp3' }
+            ];
+
+            let loadedCount = 0;
+            const totalCount = resourcesToLoad.length;
+            loadingText.textContent = `Loading resources... (0/${totalCount})`;
+
+            if (totalCount === 0) {
+                loadingScreen.style.display = 'none';
+                onComplete();
+                return;
+            }
+
+            const resourceLoaded = () => {
+                loadedCount++;
+                loadingText.textContent = `Loading resources... (${loadedCount}/${totalCount})`;
+                if (loadedCount === totalCount) {
+                    loadingScreen.style.display = 'none';
+                    onComplete();
+                }
+            };
+
+            resourcesToLoad.forEach(resource => {
+                if (typeof resource === 'string') {
+                    const img = new Image();
+                    img.src = resource;
+                    img.onload = resourceLoaded;
+                    img.onerror = resourceLoaded;
+                } 
+                else if (resource.type === 'font') {
+                    const font = new FontFace(resource.name, `url(${resource.url})`);
+                    font.load().then(() => {
+                        document.fonts.add(font);
+                        resourceLoaded();
+                    }).catch(resourceLoaded);
+                }
+                else if (resource.type === 'audio') {
+                    let audioElement;
+                    if (resource.id) {
+                        audioElement = document.getElementById(resource.id);
+                    } else {
+                        audioElement = new Audio();
+                        audioElement.src = resource.path;
+                    }
+
+                    if (audioElement) {
+                        audioElement.addEventListener('canplaythrough', resourceLoaded, { once: true });
+                        audioElement.addEventListener('error', resourceLoaded, { once: true });
+                        audioElement.load();
+                    } else {
+                        resourceLoaded();
+                    }
+                }
+            });
+        }
 
         function init() {
             (function uiDevTool() {
@@ -3129,7 +3289,7 @@
             });
         }
 
-        init();
+        preloadResources(init);
     </script>
 </body>
 
