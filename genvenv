@@ -1,0 +1,4 @@
+#!/bin/bash
+chmod +x devpip devpython pimo
+python3 -m venv venv
+./devpip install -r requirements.txt

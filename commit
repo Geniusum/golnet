@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ $# -ge 1 ]; then
+    commit_message="$1"
+else
+    commit_message="Commit"
+fi
+git add .
+git commit -m "$commit_message"
+git push origin

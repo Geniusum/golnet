@@ -1,0 +1,2 @@
+#!/bin/bash
+ls *.mp3 | parallel -j 4 'ffmpeg -i "{}" -b:a 128k "tmp_{}" && mv "tmp_{}" "{}"'

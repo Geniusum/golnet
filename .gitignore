@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+*.o
+*.ll
+*.s
+*.exe
+venv/
